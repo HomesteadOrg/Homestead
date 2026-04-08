@@ -1,0 +1,18 @@
+{{#if items.length}}
+<div class="gallery">
+  {{#each items}}
+  {{#if youtubeId}}
+  <a class="gallery-item gallery-item--video" href="{{url}}" target="_blank" rel="noopener noreferrer">
+    <img src="{{thumbnail}}" alt="{{caption}}" loading="lazy" />
+    <span class="gallery-play" aria-hidden="true">&#9654;</span>
+    {{#if caption}}<p class="gallery-caption">{{caption}}</p>{{/if}}
+  </a>
+  {{else}}
+  <button class="gallery-item gallery-item--image" data-lightbox="{{src}}" aria-label="View image">
+    <img src="{{src}}" alt="{{caption}}" loading="lazy" />
+    {{#if caption}}<p class="gallery-caption">{{caption}}</p>{{/if}}
+  </button>
+  {{/if}}
+  {{/each}}
+</div>
+{{/if}}

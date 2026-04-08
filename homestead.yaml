@@ -24,6 +24,7 @@ theme:
 #   links      - a set of link buttons (social, contact, etc.)
 #   blog       - posts with title, date, and preview text
 #   portfolio  - posts in a grid showing title and subtitle only
+#   gallery    - image and YouTube preview grid. Images open in a lightbox, YouTube links open in a new tab
 
 # Each blog/portfolio section reads from its own posts_dir.
 # You can have as many rows and sections as you want.
@@ -44,7 +45,7 @@ rows:
         width: 3
         links:
           - text: "Social"
-
+          
           - label: "GitHub"
             url: "https://github.com/yourname"
             icon: github
@@ -53,15 +54,15 @@ rows:
             url: "https://x.com/yourname"
             icon: twitter
 
-          - label: "LinkedIn"
-            url: "https://linkedin.com/in/yourname"
-            icon: linkedin
-
-          - text: "Contact"
-
           - label: "My Website"
             url: "https://yoursite.com"
             icon: globe
+
+          - text: "Contact"
+          
+          - label: "LinkedIn"
+            url: "https://linkedin.com/in/yourname"
+            icon: linkedin
 
           - label: "Email"
             url: "mailto:you@example.com"
@@ -72,13 +73,24 @@ rows:
         title: "Portfolio"
         width: 5
         posts_dir: "./posts/projects"
-        max_posts: 6   # limit how many show on the index (optional)
 
-  - column_width: medium
+  # - column_width: medium
+  #   sections:
+  #     - id: "blog"
+  #       type: "blog"
+  #       title: "Blog"
+  #       posts_dir: "./posts/writing"
+
+  - column_width: small
     sections:
-      - id: "blog"
-        type: "blog"
-        title: "Blog"
-        posts_dir: "./posts/writing"
-        max_posts: 10        # limit how many show on the index (optional)
-        show_preview: true  # set to false to hide the preview snippet on cards (optional, default true)
+      - id: "gallery"
+        type: "gallery"
+        title: "Photos"
+        items:
+          - image: "./images/gallary/image1.jpg"
+            caption: "meow"
+          - image: "./images/gallary/image2.jpg"
+          - image: "./images/gallary/image3.jpg"
+            # caption: "Optional caption"
+          - youtube: "https://www.youtube.com/watch?v=jNQXAC9IVRw"
+            caption: "Watch on Youtube"

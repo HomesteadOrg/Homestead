@@ -46,6 +46,13 @@
     {{/each}}
   </main>
 
+  <!-- Lightbox: used by gallery image items -->
+  <div class="lightbox" id="hs-lightbox" hidden>
+    <button class="lightbox-close" id="hs-lightbox-close" aria-label="Close">&times;</button>
+    <img class="lightbox-img" id="hs-lightbox-img" src="" alt="" />
+  </div>
+
+  <!-- Modal: used by portfolio post cards -->
   <div class="modal-overlay" id="hs-modal" hidden>
     <div class="modal" role="dialog" aria-modal="true">
       <button class="modal-close" id="hs-modal-close" aria-label="Close">&times;</button>
@@ -55,6 +62,30 @@
 
   <script>
     (function () {
+      // Lightbox for gallery images
+      var box = document.getElementById('hs-lightbox');
+      var img = document.getElementById('hs-lightbox-img');
+
+      document.querySelectorAll('[data-lightbox]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          img.src = btn.dataset.lightbox;
+          box.removeAttribute('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      function closeLightbox() {
+        box.setAttribute('hidden', '');
+        img.src = '';
+        document.body.style.overflow = '';
+      }
+
+      document.getElementById('hs-lightbox-close').addEventListener('click', closeLightbox);
+      box.addEventListener('click', function (e) {
+        if (e.target === box) closeLightbox();
+      });
+
+      // Modal for portfolio cards
       var overlay = document.getElementById('hs-modal');
       var body = document.getElementById('hs-modal-body');
       var closeBtn = document.getElementById('hs-modal-close');
@@ -78,8 +109,12 @@
       overlay.addEventListener('click', function (e) {
         if (e.target === overlay) closeModal();
       });
+
+      // Escape closes whichever is open
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) closeModal();
+        if (e.key !== 'Escape') return;
+        if (!box.hasAttribute('hidden')) closeLightbox();
+        if (!overlay.hasAttribute('hidden')) closeModal();
       });
     })();
   </script>

@@ -83,7 +83,7 @@ describe('loadConfig', () => {
       'rows:',
       '  - sections:',
       '      - id: foo',
-      '        type: gallery',
+      '        type: invalid_type',
     ].join('\n'), tmp => {
       expect(() => loadConfig(tmp)).toThrow('invalid type');
     });

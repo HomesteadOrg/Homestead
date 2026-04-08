@@ -11,7 +11,7 @@ const DIST = path.join(ROOT, 'dist');
 
 // Known section types — each maps to a partial in src/templates/sections/.
 // Adding a new type means adding a .hbs file there and listing it here.
-const SECTION_TYPES = ['links', 'portfolio', 'blog'];
+const SECTION_TYPES = ['links', 'portfolio', 'blog', 'gallery'];
 
 // --- Helpers ---
 
@@ -70,6 +70,45 @@ function extractPreview(markdown) {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
     .replace(/[*_`>]/g, '')                   // bold, italic, code, blockquote markers
     .trim();
+}
+
+// --- Gallery ---
+
+function extractYouTubeId(url) {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+
+// Processes raw gallery items from config into template-ready objects.
+// Images are copied into dist/gallery/ so the output stays self-contained.
+// YouTube items get a thumbnail URL from YouTube's image CDN — no iframe needed.
+function processGalleryItems(items, root, dist) {
+  const galleryDist = path.join(dist, 'gallery');
+
+  return items.flatMap(item => {
+    if (item.image) {
+      const src = path.resolve(root, item.image);
+      if (!fs.existsSync(src)) {
+        console.warn(`Warning: gallery image "${item.image}" not found, skipping.`);
+        return [];
+      }
+      fs.mkdirSync(galleryDist, { recursive: true });
+      const filename = path.basename(src);
+      fs.copyFileSync(src, path.join(galleryDist, filename));
+      return [{ type: 'image', src: `gallery/${filename}`, caption: item.caption || null }];
+    }
+
+    if (item.youtube) {
+      const id = extractYouTubeId(item.youtube);
+      if (!id) {
+        console.warn(`Warning: could not extract YouTube ID from "${item.youtube}", skipping.`);
+        return [];
+      }
+      return [{ type: 'youtube', youtubeId: id, thumbnail: `https://img.youtube.com/vi/${id}/hqdefault.jpg`, url: item.youtube, caption: item.caption || null }];
+    }
+
+    return [];
+  });
 }
 
 // --- Posts ---
@@ -168,6 +207,10 @@ function build() {
         isText: !link.url,
         iconSvg: link.icon ? (icons[link.icon] || null) : null,
       }));
+      const items = section.type === 'gallery'
+        ? processGalleryItems(section.items, ROOT, DIST)
+        : [];
+
       return {
         id: section.id,
         type: section.type,
@@ -175,6 +218,7 @@ function build() {
         width: section.width,
         links,
         posts: cardPosts,
+        items,
       };
     }),
   }));
