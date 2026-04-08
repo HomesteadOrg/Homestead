@@ -172,8 +172,26 @@ rows:
 - `links` — a column of link buttons. Add `- text: "Label"` anywhere in the list to insert a small group heading.
 - `blog` — post cards with title, date, and a preview snippet. Clicking opens the full post page.
 - `portfolio` — compact post cards in a two-column grid. Clicking opens the post in a modal overlay without leaving the page.
+- `gallery` — image and YouTube grid. See below.
 
 **Supported icons:** `github`, `twitter`, `instagram`, `linkedin`, `youtube`, `twitch`, `discord`, `bluesky`, `email`, `globe`, `rss`
+
+### Gallery
+
+Add a `gallery` section and list items using `image` (local file path) or `youtube` (full video URL). Both support an optional `caption`.
+
+```yaml
+- id: "photos"
+  type: "gallery"
+  title: "Photos"
+  items:
+    - image: "./images/photo.jpg"
+      caption: "Optional caption"
+    - youtube: "https://www.youtube.com/watch?v=..."
+      caption: "Watch on YouTube"
+```
+
+Images are copied to `dist/gallery/` at build time and open in a full-screen lightbox when clicked. YouTube items show a thumbnail pulled from YouTube's image CDN (no iframe or tracking scripts loaded on your page) and open the video in a new tab.
 
 ### Writing Posts
 

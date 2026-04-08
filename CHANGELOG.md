@@ -20,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `build.js` helper functions (`slugify`, `formatDate`, `extractPreview`, `fontVars`) are now exported for testing
 - `build.js` build execution is now guarded with `require.main === module` so importing the file doesn't trigger a build
 
+## [0.5.0] - 2026-04-07
+
+### Added
+
+- `gallery` section type — display images and YouTube videos in a grid. Images copy to `dist/gallery/` at build time and open in a full-screen lightbox. YouTube items show a thumbnail (no iframe/tracking) and open in a new tab on click.
+
 ## [0.4.0] - 2026-04-07
 
 ### Added

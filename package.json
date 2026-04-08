@@ -1,6 +1,6 @@
 {
   "name": "homestead",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "main": "index.js",
   "scripts": {
     "build": "node src/build.js",
