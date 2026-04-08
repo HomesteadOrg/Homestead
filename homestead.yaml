@@ -68,6 +68,7 @@ rows:
         title: "Portfolio"
         width: 5
         posts_dir: "./posts/projects"
+        max_posts: 6   # limit how many show on the index (optional)
 
   - column_width: medium
     sections:
@@ -75,3 +76,5 @@ rows:
         type: "blog"
         title: "Blog"
         posts_dir: "./posts/writing"
+        max_posts: 10        # limit how many show on the index (optional)
+        show_preview: true  # set to false to hide the preview snippet on cards (optional, default true)
