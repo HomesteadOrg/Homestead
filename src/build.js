@@ -147,9 +147,13 @@ function build() {
       ? loadPostsFromDir(section.posts_dir, section.id)
       : [];
 
-    const cardPosts = section.type === 'portfolio'
+    let cardPosts = section.type === 'portfolio'
       ? allPosts.map(p => ({ ...p, preview: null, date: null }))
-      : allPosts;
+      : allPosts.map(p => ({ ...p, preview: section.show_preview ? p.preview : null }));
+
+    if (section.max_posts != null) {
+      cardPosts = cardPosts.slice(0, section.max_posts);
+    }
 
     sectionPostMap.set(section.id, { allPosts, cardPosts });
   }
@@ -161,6 +165,7 @@ function build() {
       const { cardPosts } = sectionPostMap.get(section.id);
       const links = section.links.map(link => ({
         ...link,
+        isText: !link.url,
         iconSvg: link.icon ? (icons[link.icon] || null) : null,
       }));
       return {

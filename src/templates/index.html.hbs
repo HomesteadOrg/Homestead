@@ -45,5 +45,43 @@
     </div>
     {{/each}}
   </main>
+
+  <div class="modal-overlay" id="hs-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="hs-modal-close" aria-label="Close">&times;</button>
+      <div class="modal-body" id="hs-modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var overlay = document.getElementById('hs-modal');
+      var body = document.getElementById('hs-modal-body');
+      var closeBtn = document.getElementById('hs-modal-close');
+
+      document.querySelectorAll('[data-modal-target]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var src = document.getElementById(btn.dataset.modalTarget);
+          body.innerHTML = src.innerHTML;
+          overlay.removeAttribute('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      function closeModal() {
+        overlay.setAttribute('hidden', '');
+        body.innerHTML = '';
+        document.body.style.overflow = '';
+      }
+
+      closeBtn.addEventListener('click', closeModal);
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) closeModal();
+      });
+    })();
+  </script>
 </body>
 </html>
