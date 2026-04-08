@@ -119,6 +119,15 @@ h1 {
   gap: 0.5rem;
 }
 
+.link-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  padding: 0.5rem 0 0.125rem;
+}
+
 .link-btn {
   display: flex;
   align-items: center;
@@ -160,9 +169,6 @@ h1 {
 }
 
 /* --- Posts --- */
-
-.posts {
-}
 
 /* In portfolio sections the grid is tighter, so reduce card padding */
 .site-section--portfolio .post-card {

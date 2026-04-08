@@ -165,6 +165,7 @@ function build() {
       const { cardPosts } = sectionPostMap.get(section.id);
       const links = section.links.map(link => ({
         ...link,
+        isText: !link.url,
         iconSvg: link.icon ? (icons[link.icon] || null) : null,
       }));
       return {
