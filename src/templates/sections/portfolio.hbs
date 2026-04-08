@@ -1,12 +1,17 @@
 {{#if posts.length}}
 <div class="posts">
   {{#each posts}}
-  <a class="post-card" href="{{ url }}">
+  <button class="post-card" data-modal-target="post-{{../id}}-{{slug}}">
     <div class="post-header">
       <span class="post-title">{{ title }}</span>
     </div>
     {{#if subtitle}}<p class="post-subtitle">{{ subtitle }}</p>{{/if}}
-  </a>
+  </button>
+  <div id="post-{{../id}}-{{slug}}" hidden>
+    <h2 class="modal-post-title">{{title}}</h2>
+    {{#if date}}<p class="post-meta">{{date}}</p>{{/if}}
+    <div class="content">{{{ content }}}</div>
+  </div>
   {{/each}}
 </div>
 {{/if}}

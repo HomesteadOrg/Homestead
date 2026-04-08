@@ -46,13 +46,23 @@
     {{/each}}
   </main>
 
+  <!-- Lightbox: used by gallery image items -->
   <div class="lightbox" id="hs-lightbox" hidden>
     <button class="lightbox-close" id="hs-lightbox-close" aria-label="Close">&times;</button>
     <img class="lightbox-img" id="hs-lightbox-img" src="" alt="" />
   </div>
 
+  <!-- Modal: used by portfolio post cards -->
+  <div class="modal-overlay" id="hs-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="hs-modal-close" aria-label="Close">&times;</button>
+      <div class="modal-body" id="hs-modal-body"></div>
+    </div>
+  </div>
+
   <script>
     (function () {
+      // Lightbox for gallery images
       var box = document.getElementById('hs-lightbox');
       var img = document.getElementById('hs-lightbox-img');
 
@@ -64,18 +74,47 @@
         });
       });
 
-      function close() {
+      function closeLightbox() {
         box.setAttribute('hidden', '');
         img.src = '';
         document.body.style.overflow = '';
       }
 
-      document.getElementById('hs-lightbox-close').addEventListener('click', close);
+      document.getElementById('hs-lightbox-close').addEventListener('click', closeLightbox);
       box.addEventListener('click', function (e) {
-        if (e.target === box) close();
+        if (e.target === box) closeLightbox();
       });
+
+      // Modal for portfolio cards
+      var overlay = document.getElementById('hs-modal');
+      var body = document.getElementById('hs-modal-body');
+      var closeBtn = document.getElementById('hs-modal-close');
+
+      document.querySelectorAll('[data-modal-target]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var src = document.getElementById(btn.dataset.modalTarget);
+          body.innerHTML = src.innerHTML;
+          overlay.removeAttribute('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      function closeModal() {
+        overlay.setAttribute('hidden', '');
+        body.innerHTML = '';
+        document.body.style.overflow = '';
+      }
+
+      closeBtn.addEventListener('click', closeModal);
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+      });
+
+      // Escape closes whichever is open
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !box.hasAttribute('hidden')) close();
+        if (e.key !== 'Escape') return;
+        if (!box.hasAttribute('hidden')) closeLightbox();
+        if (!overlay.hasAttribute('hidden')) closeModal();
       });
     })();
   </script>

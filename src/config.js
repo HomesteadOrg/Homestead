@@ -77,6 +77,8 @@ function loadConfig(root = process.cwd()) {
         posts_dir: s.posts_dir || null,
         width: s.width != null ? s.width : 1,
         items: s.items || [],
+        max_posts: s.max_posts != null ? s.max_posts : null,
+        show_preview: s.show_preview !== false,
       })),
     })),
   };
