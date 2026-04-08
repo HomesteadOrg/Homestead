@@ -45,5 +45,39 @@
     </div>
     {{/each}}
   </main>
+
+  <div class="lightbox" id="hs-lightbox" hidden>
+    <button class="lightbox-close" id="hs-lightbox-close" aria-label="Close">&times;</button>
+    <img class="lightbox-img" id="hs-lightbox-img" src="" alt="" />
+  </div>
+
+  <script>
+    (function () {
+      var box = document.getElementById('hs-lightbox');
+      var img = document.getElementById('hs-lightbox-img');
+
+      document.querySelectorAll('[data-lightbox]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          img.src = btn.dataset.lightbox;
+          box.removeAttribute('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      function close() {
+        box.setAttribute('hidden', '');
+        img.src = '';
+        document.body.style.overflow = '';
+      }
+
+      document.getElementById('hs-lightbox-close').addEventListener('click', close);
+      box.addEventListener('click', function (e) {
+        if (e.target === box) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !box.hasAttribute('hidden')) close();
+      });
+    })();
+  </script>
 </body>
 </html>
