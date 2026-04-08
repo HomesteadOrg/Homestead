@@ -64,10 +64,9 @@ Your home base on the web. Compile your links, create posts to show off projects
 
 **Why Homestead?**
 
-- No third-party platform or account needed (outside Github)
+- No third-party platform or account needed (outside GitHub)
 - Create your own site without opening a code editor
-- Zero JavaScript output, plain HTML and CSS for simplicity
-- Blog support built in, just drop Markdown files in a folder
+- Blog and portfolio support built in, just drop Markdown files in a folder
 - Fully themeable from one config file
 - Free to host on GitHub Pages
 
@@ -116,57 +115,82 @@ Your home base on the web. Compile your links, create posts to show off projects
 
 All configuration lives in `homestead.yaml` at the project root.
 
+### Theme
+
 ```yaml
-# Your display name — shown as the page title and <h1>
 title: "Jane Doe"
-
-# Short bio shown below your name (optional)
 bio: "Designer & maker of things."
-
-# Path to your profile picture, relative to this file (optional)
-# avatar: ".images/avatar.png"
+avatar: "./images/avatar.png"  # optional
 
 theme:
-  background: "#f6f1e8" # page background
-  surface: "#fffaf2" # card and button background
-  accent: "#c26d3a" # hover and highlight color
-  text: "#2f241f" # body text color
-  font: "Oxygen" # Google Font name, or "system" for no CDN
-  radius: "16px" # button corner radius
-  border: "#d4b99a" # optional border/shadow color (omit to disable)
-
-links:
-  - label: "GitHub"
-    url: "https://github.com/janedoe"
-    icon: github
-  - label: "Twitter / X"
-    url: "https://x.com/janedoe"
-    icon: twitter
-  - label: "My Website"
-    url: "https://janedoe.com"
-    icon: globe
-
-# Folder of Markdown files to render as blog posts (optional — omit to hide)
-posts_dir: "./posts"
+  background: "#f6f1e8"  # page background
+  surface: "#fffaf2"     # card and button background
+  accent: "#c26d3a"      # hover and highlight color
+  text: "#2f241f"        # body text color
+  font: "Oxygen"         # any Google Font name, or "system" for no CDN
+  radius: "16px"         # corner radius on cards and buttons
+  border: "#d4b99a"      # optional border color (omit to disable)
 ```
+
+### Layout
+
+The page is built from rows stacked top to bottom. Each row holds one or more sections displayed side by side. Sections in the same row split its width equally by default, or you can weight them with `width`.
+
+```yaml
+rows:
+  - column_width: small   # xsmall | small | medium | large (default)
+    sections:
+      - id: "connect"
+        type: "links"
+        width: 1
+        links:
+          - text: "Social"
+          - label: "GitHub"
+            url: "https://github.com/janedoe"
+            icon: github
+          - label: "Twitter / X"
+            url: "https://x.com/janedoe"
+            icon: twitter
+
+  - column_width: medium
+    sections:
+      - id: "projects"
+        type: "portfolio"
+        title: "Projects"
+        posts_dir: "./posts/projects"
+        max_posts: 6        # optional — limits cards shown on index
+
+      - id: "blog"
+        type: "blog"
+        title: "Writing"
+        posts_dir: "./posts/writing"
+        max_posts: 5        # optional
+        show_preview: true  # set to false to hide excerpt snippets
+```
+
+**Section types:**
+- `links` — a column of link buttons. Add `- text: "Label"` anywhere in the list to insert a small group heading.
+- `blog` — post cards with title, date, and a preview snippet. Clicking opens the full post page.
+- `portfolio` — compact post cards in a two-column grid. Clicking opens the post in a modal overlay without leaving the page.
 
 **Supported icons:** `github`, `twitter`, `instagram`, `linkedin`, `youtube`, `twitch`, `discord`, `bluesky`, `email`, `globe`, `rss`
 
 ### Writing Posts
 
-Drop `.md` files into your `posts/` folder with a frontmatter block:
+Drop `.md` files into any `posts_dir` folder with a frontmatter block:
 
 ```markdown
 ---
 title: "My First Post"
 date: 2026-03-01
-excerpt: "A short summary shown on the index page."
+subtitle: "A short line shown under the title on cards."
 ---
 
 Your post content here, written in standard Markdown.
+The first paragraph is automatically used as the preview snippet on blog cards.
 ```
 
-Each post gets its own page at `dist/posts/<slug>.html` after a build.
+Blog posts get their own page at `dist/<section-id>/<slug>.html`. Portfolio posts open in a modal on the index page.
 
 ### Deploying to GitHub Pages
 
@@ -182,7 +206,7 @@ Each post gets its own page at `dist/posts/<slug>.html` after a build.
 
 - [ ] More built-in icons
 - [ ] Multiple bundled themes to pick from
-- [ ] Image and GIF support in posts
+- [ ] Profile layout options (sidebar, centered)
 - [ ] "Use this template" GitHub template repo setup
 - [ ] Auto-deploy via GitHub Actions on push
 - [ ] Full from-zero video tutorial
